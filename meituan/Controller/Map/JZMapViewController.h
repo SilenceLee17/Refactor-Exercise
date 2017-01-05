@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface JZMapViewControlle : UIViewController
+@interface JZMapViewController : UIViewController
 
 @end

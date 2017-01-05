@@ -33,6 +33,7 @@
 
 - (void)awakeFromNib {
     // Initialization code
+    [super awakeFromNib];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -303,7 +304,7 @@
                     }];
                 }];
             }else if (_ContentView.transform.tx <0){
-                CGFloat tx = fabsf(_ContentView.transform.tx);
+                CGFloat tx = fabs(_ContentView.transform.tx);
                 if (tx < _menuViewWidth /2.0 || (tx < _menuViewWidth && _isOpen)) {
                     [UIView animateWithDuration:0.2 animations:^{
                         _ContentView.transform = CGAffineTransformMakeTranslation(0.0, 0.0);
@@ -338,7 +339,7 @@
     }else if([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]){
         UIPanGestureRecognizer *panGesture = (UIPanGestureRecognizer *)gestureRecognizer;
         CGPoint velocityPoint = [panGesture velocityInView:panGesture.view];
-        if (fabsf(velocityPoint.x) > fabsf(velocityPoint.y)) {
+        if (fabs(velocityPoint.x) > fabs(velocityPoint.y)) {
             return YES;
         }else{
             _isScrollClose = [_delegate JZMenuCell:self didPullCell:-1];

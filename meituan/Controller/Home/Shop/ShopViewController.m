@@ -300,7 +300,7 @@
                 UIButton *tuiBtn = [UIButton buttonWithType:UIButtonTypeCustom];
                 tuiBtn.frame = CGRectMake(0, 5, 100, 30);
                 tuiBtn.tag = 10;
-                tuiBtn.font = [UIFont systemFontOfSize:13];
+                tuiBtn.titleLabel.font = [UIFont systemFontOfSize:13];
                 [tuiBtn setImage:[UIImage imageNamed:@"icon_deal_anytime_refund"] forState:UIControlStateNormal];
                 [tuiBtn setTitle:@"随时退" forState:UIControlStateNormal];
                 [tuiBtn setTitleColor:RGB(126,171,63) forState:UIControlStateNormal];

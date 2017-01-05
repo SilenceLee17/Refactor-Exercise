@@ -32,7 +32,7 @@
 //        NSLog(@"self.frame.size.width:%f",self.frame.size.width);
         _numberBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         _numberBtn.frame = CGRectMake(self.frame.size.width-85, 12, 80, 15);
-        _numberBtn.font = [UIFont systemFontOfSize:11];
+        _numberBtn.titleLabel.font = [UIFont systemFontOfSize:11];
         _numberBtn.layer.cornerRadius = 7;
         _numberBtn.layer.masksToBounds = YES;
         [_numberBtn setBackgroundImage:[UIImage imageNamed:@"film"] forState:UIControlStateNormal];
@@ -51,6 +51,7 @@
 
 - (void)awakeFromNib {
     // Initialization code
+    [super awakeFromNib];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -71,7 +72,10 @@
     }
     
     NSString *str = [NSString stringWithFormat:@"%@>",groupM.count];
-    CGSize textSize = [str sizeWithFont:[UIFont systemFontOfSize:11] constrainedToSize:CGSizeMake(80, 15) lineBreakMode:NSLineBreakByWordWrapping];
+    
+#warning checkout
+    CGSize textSize = [str boundingRectWithSize:CGSizeMake(80, 15) options: NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:11]} context:nil].size;
+    //    CGSize textSize = [str sizeWithFont:[UIFont systemFontOfSize:11] constrainedToSize:CGSizeMake(80, 15) lineBreakMode:NSLineBreakByWordWrapping];
     
     _numberBtn.frame = CGRectMake(self.frame.size.width-10-textSize.width-10, 12, textSize.width+10, 15);
     

@@ -98,7 +98,7 @@
     [segBtn1 setTitleColor:navigationBarColor forState:UIControlStateNormal];
     [segBtn1 setBackgroundColor:navigationBarColor];
     segBtn1.selected = YES;
-    segBtn1.font = [UIFont systemFontOfSize:15];
+    segBtn1.titleLabel.font = [UIFont systemFontOfSize:15];
     segBtn1.layer.borderWidth = 1;
     segBtn1.layer.borderColor = [navigationBarColor CGColor];
     [segBtn1 addTarget:self action:@selector(OnSegBtn:) forControlEvents:UIControlEventTouchUpInside];
@@ -111,7 +111,7 @@
     [segBtn2 setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
     [segBtn2 setTitleColor:navigationBarColor forState:UIControlStateNormal];
     [segBtn2 setBackgroundColor:[UIColor whiteColor]];
-    segBtn2.font = [UIFont systemFontOfSize:15];
+    segBtn2.titleLabel.font = [UIFont systemFontOfSize:15];
     segBtn2.layer.borderWidth = 1;
     segBtn2.layer.borderColor = [navigationBarColor CGColor];
     [segBtn2 addTarget:self action:@selector(OnSegBtn:) forControlEvents:UIControlEventTouchUpInside];

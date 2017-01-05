@@ -30,6 +30,7 @@
 
 - (void)awakeFromNib {
     // Initialization code
+    [super awakeFromNib];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -76,7 +77,7 @@
         UIButton *segBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         segBtn.frame = CGRectMake(i*screen_width/4, 0, screen_width/4, 40);
         segBtn.tag = 30+i;
-        segBtn.font = [UIFont systemFontOfSize:15];
+        segBtn.titleLabel.font = [UIFont systemFontOfSize:15];
         [segBtn setTitleColor:navigationBarColor forState:UIControlStateSelected];
         [segBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [segBtn setTitle:@"我是标题啊" forState:UIControlStateNormal];

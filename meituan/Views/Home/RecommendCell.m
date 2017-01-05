@@ -29,6 +29,7 @@
 
 - (void)awakeFromNib {
     // Initialization code
+    [super awakeFromNib];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -57,7 +58,8 @@
     self.shopInfoLabel.textColor = [UIColor lightGrayColor];
     self.shopInfoLabel.font = [UIFont systemFontOfSize:13];
     self.shopInfoLabel.numberOfLines = 2;
-    self.shopInfoLabel.lineBreakMode = UILineBreakModeWordWrap|UILineBreakModeTailTruncation;
+#warning todo
+//    self.shopInfoLabel.lineBreakMode = UILineBreakModeWordWrap|UILineBreakModeTailTruncation;
     [self.contentView addSubview:self.shopInfoLabel];
     
     //价格
@@ -77,7 +79,10 @@
     self.shopInfoLabel.text = [NSString stringWithFormat:@"[%@]%@",recommendData.range,recommendData.title];
     NSString *priceStr = [NSString stringWithFormat:@"%d元",[recommendData.price intValue]];
     NSLog(@"%@",priceStr);
-    CGSize labelSize = [priceStr sizeWithFont:[UIFont systemFontOfSize:17] constrainedToSize:CGSizeMake(200, 20) lineBreakMode:NSLineBreakByWordWrapping];
+#warning checkout
+    CGSize labelSize = [priceStr boundingRectWithSize:CGSizeMake(200, 20) options: NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:17]} context:nil].size;
+
+//    CGSize labelSize = [priceStr sizeWithFont:[UIFont systemFontOfSize:17] constrainedToSize:CGSizeMake(200, 20) lineBreakMode:NSLineBreakByWordWrapping];
     self.priceLabel.text = priceStr;
     self.priceLabel.frame = CGRectMake(100, 75, labelSize.width+10, 20);
 }
@@ -92,7 +97,9 @@
     self.shopInfoLabel.text = [NSString stringWithFormat:@"[%@]%@",dealData.range,dealData.title];
     
     NSString *priceStr = [NSString stringWithFormat:@"%d元",[dealData.price intValue]];
-    CGSize labelSize = [priceStr sizeWithFont:[UIFont systemFontOfSize:17] constrainedToSize:CGSizeMake(200, 20) lineBreakMode:NSLineBreakByWordWrapping];
+#warning checkout
+    CGSize labelSize = [priceStr boundingRectWithSize:CGSizeMake(200, 20) options: NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:17]} context:nil].size;
+    //    CGSize labelSize = [priceStr sizeWithFont:[UIFont systemFontOfSize:17] constrainedToSize:CGSizeMake(200, 20) lineBreakMode:NSLineBreakByWordWrapping];
     self.priceLabel.text = priceStr;
     self.priceLabel.frame = CGRectMake(100, 75, labelSize.width+10, 20);
 }

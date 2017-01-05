@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "9DA755286513F999D008C27B8CAEFC5DF78F9911",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "9DA755286513F999D008C27B8CAEFC5DF78F9911" : 9223372036854775807,
+    "F0DB76D150EA4E7D0F034D4F9D3C7E1EB0DC8D39" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "D32DE5D4-942D-4DE4-A22D-C819518C1273",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "9DA755286513F999D008C27B8CAEFC5DF78F9911" : "Refactor-Exercise\/",
+    "F0DB76D150EA4E7D0F034D4F9D3C7E1EB0DC8D39" : "meituan"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "meituan",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "meituan.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:SilenceLee17\/Refactor-Exercise.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "9DA755286513F999D008C27B8CAEFC5DF78F9911"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/lookingstars\/meituan.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "F0DB76D150EA4E7D0F034D4F9D3C7E1EB0DC8D39"
+    }
+  ]
+}

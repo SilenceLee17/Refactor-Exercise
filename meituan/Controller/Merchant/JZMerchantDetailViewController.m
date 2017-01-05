@@ -19,7 +19,7 @@
 
 #import "UMSocial.h"
 
-@interface JZMerchantDetailViewController ()<UITableViewDataSource,UITableViewDelegate>
+@interface JZMerchantDetailViewController ()<UITableViewDataSource,UITableViewDelegate,UMSocialUIDelegate>
 {
     UILabel *_titleLabel;
     NSMutableArray *_dataSourceArray;

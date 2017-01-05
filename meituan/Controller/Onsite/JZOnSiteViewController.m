@@ -161,7 +161,7 @@
         return 155.0;
     }else{
         if (_homeServiceArray.count!=0) {
-            int y = (_homeServiceArray.count +2-1)/2;
+            long y = (_homeServiceArray.count +2-1)/2;
             return 125*y+5;
         }else{
             return 125*5+5;

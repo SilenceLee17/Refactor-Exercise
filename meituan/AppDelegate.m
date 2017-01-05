@@ -199,7 +199,7 @@
     //    item5.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0);
     
     //改变UITabBarItem字体颜色
-    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:RGB(54, 185,175),UITextAttributeTextColor, nil] forState:UIControlStateSelected];
+    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:RGB(54, 185,175),NSForegroundColorAttributeName, nil] forState:UIControlStateSelected];
     
     //友盟统计
     [MobClick startWithAppkey:UMAPPKEY reportPolicy:BATCH   channelId:@"GitHub"];
@@ -289,7 +289,7 @@
 }
 
 //禁止横屏
-- (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
 {
     return UIInterfaceOrientationMaskPortrait;
 }

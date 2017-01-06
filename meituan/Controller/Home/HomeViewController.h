@@ -11,6 +11,5 @@
 
 @interface HomeViewController : UIViewController
 
-@property(nonatomic, strong) UITableView *tableView;
 
 @end

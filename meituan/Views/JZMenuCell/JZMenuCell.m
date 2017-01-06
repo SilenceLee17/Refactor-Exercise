@@ -205,7 +205,7 @@
 //单击菜单项
 -(void)clickMenuItem:(UIButton *)sender{
     NSInteger tag = sender.tag;
-    NSLog(@"单击按钮:%ld",tag);
+    NSLog(@"单击按钮:%ld",(long)tag);
     [self closeCellWithAnimation:YES];
 }
 

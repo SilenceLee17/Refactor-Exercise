@@ -211,7 +211,7 @@
 -(void)didSelectAtIndex:(NSInteger)index{
     AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    NSLog(@"index:%ld",index);
+    NSLog(@"index:%ld",(long)index);
     HomeServiceModel *homeM = _homeServiceArray[index];
     NSString *url = homeM.jumpUrl;
     if ([url rangeOfString:@"url=http"].location != NSNotFound) {

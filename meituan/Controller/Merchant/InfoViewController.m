@@ -65,7 +65,7 @@
 
 #pragma mark - JZMenuCellDelegate
 -(BOOL)JZMenuCell:(JZMenuCell *)menuCell didPullCell:(NSInteger)index{
-    NSLog(@"index:%ld",index);
+    NSLog(@"index:%ld",(long)index);
     
     [menuCell closeCellWithTableView:self.tableView index:index animation:YES];
     return NO;

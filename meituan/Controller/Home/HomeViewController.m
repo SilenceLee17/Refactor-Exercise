@@ -11,38 +11,30 @@
 #import "RushDataModel.h"
 #import "RushDealsModel.h"
 #import "MJRefresh.h"
-
 #import "HomeMenuCell.h"
 #import "RushCell.h"
 #import "HotQueueModel.h"
 #import "HotQueueCell.h"
 #import "RecommendModel.h"
-
 #import "RecommendCell.h"
 #import "DiscountModel.h"
 #import "DiscountCell.h"
-
 #import "DiscountViewController.h"
 #import "RushViewController.h"
 #import "DiscountOCViewController.h"
 #import "HotQueueViewController.h"
 #import "ShopViewController.h"
-
 #import "JZMapViewController.h"
 
-
+#import "EXTScope.h"
 
 @interface HomeViewController ()<UITableViewDataSource, UITableViewDelegate,DiscountDelegate,RushDelegate>
-{
-    NSMutableArray *_menuArray;//
-    NSMutableArray *_rushArray;//抢购数据
-    HotQueueModel *_hotQueueData;
-    NSMutableArray *_recommendArray;
-    NSMutableArray *_discountArray;
-    
-    
-    
-}
+@property(nonatomic, copy) NSMutableArray *menuArray;
+@property(nonatomic, copy) NSMutableArray *rushArray;//抢购数据
+@property(nonatomic, copy) NSMutableArray *recommendArray;
+@property(nonatomic, copy) NSMutableArray *discountArray;
+@property(nonatomic, strong) HotQueueModel *hotQueueData;
+@property(nonatomic, strong) UITableView *tableView;
 
 @end
 
@@ -55,13 +47,8 @@
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     self.navigationController.interactivePopGestureRecognizer.delegate = nil;
     [self initData];        
-    [self setNav];
+    [self setupNavigation];
     [self initTableView];    
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 //初始化数据
@@ -76,34 +63,32 @@
     _menuArray = [[NSMutableArray alloc] initWithContentsOfFile:plistPath];
 }
 
--(void)setNav{
-    UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width, 64)];
-    backView.backgroundColor = navigationBarColor;
-    [self.view addSubview:backView];
+-(void)setupNavigation{
+    UIView *navigationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width, 64)];
+    navigationView.backgroundColor = navigationBarColor;
+    [self.view addSubview:navigationView];
     //城市
-    UIButton *cityBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    cityBtn.frame = CGRectMake(10, 30, 40, 25);
-    cityBtn.titleLabel.font = [UIFont systemFontOfSize:15];
-    [cityBtn setTitle:@"北京" forState:UIControlStateNormal];
-    [backView addSubview:cityBtn];
-    //
-    UIImageView *arrowImage = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(cityBtn.frame), 38, 13, 10)];
-    [arrowImage setImage:[UIImage imageNamed:@"icon_homepage_downArrow"]];
-    [backView addSubview:arrowImage];
+    UIButton *cityButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    cityButton.frame = CGRectMake(10, 30, 40, 25);
+    cityButton.titleLabel.font = [UIFont systemFontOfSize:15];
+    [cityButton setTitle:@"北京" forState:UIControlStateNormal];
+    [navigationView addSubview:cityButton];
+    UIImageView *cityArrowImage = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(cityButton.frame), 38, 13, 10)];
+    [cityArrowImage setImage:[UIImage imageNamed:@"icon_homepage_downArrow"]];
+    [navigationView addSubview:cityArrowImage];
     //地图
-    UIButton *mapBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    mapBtn.frame = CGRectMake(screen_width-42, 30, 42, 30);
-    [mapBtn setImage:[UIImage imageNamed:@"icon_homepage_map_old"] forState:UIControlStateNormal];
-    [mapBtn addTarget:self action:@selector(OnMapBtnTap:) forControlEvents:UIControlEventTouchUpInside];
-    [backView addSubview:mapBtn];
+    UIButton *locationButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    locationButton.frame = CGRectMake(screen_width-42, 30, 42, 30);
+    [locationButton setImage:[UIImage imageNamed:@"icon_homepage_map_old"] forState:UIControlStateNormal];
+    [locationButton addTarget:self action:@selector(locationButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [navigationView addSubview:locationButton];
     
     //搜索框
-    UIView *searchView = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(arrowImage.frame)+10, 30, 200, 25)];
-//    searchView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"background_home_searchBar"]];
+    UIView *searchView = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(cityArrowImage.frame)+10, 30, 200, 25)];
     searchView.backgroundColor = RGB(7, 170, 153);
     searchView.layer.masksToBounds = YES;
     searchView.layer.cornerRadius = 12;
-    [backView addSubview:searchView];
+    [navigationView addSubview:searchView];
     
     //
     UIImageView *searchImage = [[UIImageView alloc] initWithFrame:CGRectMake(5, 3, 15, 15)];
@@ -112,8 +97,7 @@
     
     UILabel *placeHolderLabel = [[UILabel alloc] initWithFrame:CGRectMake(25, 0, 150, 25)];
     placeHolderLabel.font = [UIFont boldSystemFontOfSize:13];
-//    placeHolderLabel.text = @"请输入商家、品类、商圈";
-    placeHolderLabel.text = @"鲁总专享版";
+    placeHolderLabel.text = @"请输入商家、品类、商圈";
     placeHolderLabel.textColor = [UIColor whiteColor];
     [searchView addSubview:placeHolderLabel];    
 }
@@ -124,11 +108,11 @@
     self.tableView.dataSource = self;
     [self.view addSubview:self.tableView];
     
-    [self setUpTableView];
+    [self setUpTableViewLoading];
     
 }
 
--(void)setUpTableView{
+-(void)setUpTableViewLoading{
     //添加下拉的动画图片
     //设置下拉刷新回调
     [self.tableView addGifHeaderWithRefreshingTarget:self refreshingAction:@selector(refreshData)];
@@ -157,7 +141,7 @@
 }
 
 
--(void)OnMapBtnTap:(UIButton *)sender{
+-(void)locationButtonClicked:(UIButton *)sender{
     JZMapViewController *JZMapVC = [[JZMapViewController alloc] init];
     [self.navigationController pushViewController:JZMapVC animated:YES];
 }
@@ -179,36 +163,28 @@
 //请求抢购数据
 -(void)getRushBuyData{
     NSString *url = @"http://api.meituan.com/group/v1/deal/activity/1?__skck=40aaaf01c2fc4801b9c059efcd7aa146&__skcy=NF9S7jqv3TVBAoEURoapWJ5VBdQ%3D&__skno=FB6346F3-98FF-4B26-9C36-DC9022236CC3&__skts=1434530933.316028&__skua=bd6b6e8eadfad15571a15c3b9ef9199a&__vhost=api.mobile.meituan.com&ci=1&client=iphone&movieBundleVersion=100&msid=48E2B810-805D-4821-9CDD-D5C9E01BC98A2015-06-17-14-50363&ptId=iphone_5.7&userid=10086&utm_campaign=AgroupBgroupD100Fab_chunceshishuju__a__a___b1junglehomepagecatesort__b__leftflow___ab_gxhceshi__nostrategy__leftflow___ab_gxhceshi0202__b__a___ab_pindaochangsha__a__leftflow___ab_xinkeceshi__b__leftflow___ab_gxtest__gd__leftflow___ab_gxh_82__nostrategy__leftflow___ab_pindaoshenyang__a__leftflow___i_group_5_2_deallist_poitype__d__d___ab_b_food_57_purepoilist_extinfo__a__a___ab_trip_yidizhoubianyou__b__leftflow___ab_i_group_5_3_poidetaildeallist__a__b___ab_waimaizhanshi__b__b1___a20141120nanning__m1__leftflow___ab_pindaoquxincelue__a__leftflow___ab_i_group_5_5_onsite__b__b___ab_i_group_5_6_searchkuang__a__leftflow&utm_content=4B8C0B46F5B0527D55EA292904FD7E12E48FB7BEA8DF50BFE7828AF7F20BB08D&utm_medium=iphone&utm_source=AppStore&utm_term=5.7&uuid=4B8C0B46F5B0527D55EA292904FD7E12E48FB7BEA8DF50BFE7828AF7F20BB08D&version_name=5.7";
-    __weak __typeof(self) weakself = self;
     [[NetworkSingleton sharedManager] getRushBuyResult:nil url:url successBlock:^(id responseBody){
-        if (weakself) {
-            NSLog(@"抢购请求成功");
-            NSDictionary *dataDic = [responseBody objectForKey:@"data"];
-            RushDataModel *rushDataM = [RushDataModel objectWithKeyValues:dataDic];
-            [_rushArray removeAllObjects];
-            
-            for (int i = 0; i < rushDataM.deals.count; i++) {
-                RushDealsModel *deals = [RushDealsModel objectWithKeyValues:rushDataM.deals[i]];
-                [_rushArray addObject:deals];
-            }
-            [weakself.tableView reloadData];
+        NSLog(@"抢购请求成功");
+        NSDictionary *dataDic = [responseBody objectForKey:@"data"];
+        RushDataModel *rushDataM = [RushDataModel objectWithKeyValues:dataDic];
+        [_rushArray removeAllObjects];
+        
+        for (int i = 0; i < rushDataM.deals.count; i++) {
+            RushDealsModel *deals = [RushDealsModel objectWithKeyValues:rushDataM.deals[i]];
+            [_rushArray addObject:deals];
         }
+        [self.tableView reloadData];
+        
     } failureBlock:^(NSString *error){
-        if (weakself) {
-            NSLog(@"%@",error);
-            [weakself.tableView.header endRefreshing];
-        }
+        [self.tableView.header endRefreshing];
     }];
 }
 //请求热门排队数据
 -(void)getHotQueueData{
     AppDelegate* delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     
-//    NSString *urlStr = @"http://api.meituan.com/group/v1/itemportal/position/39.983497,116.318042?__skck=40aaaf01c2fc4801b9c059efcd7aa146&__skcy=x6Fyq0RW3Z7ZtUXKPpRXPbYUGRE%3D&__skno=348FAC89-38E1-4880-A550-E992DB9AE44E&__skts=1434530933.451634&__skua=bd6b6e8eadfad15571a15c3b9ef9199a&__vhost=api.mobile.meituan.com&ci=1&cityId=1&client=iphone&movieBundleVersion=100&msid=48E2B810-805D-4821-9CDD-D5C9E01BC98A2015-06-17-14-50363&userid=104108621&utm_campaign=AgroupBgroupD100Fab_chunceshishuju__a__a___b1junglehomepagecatesort__b__leftflow___ab_gxhceshi__nostrategy__leftflow___ab_gxhceshi0202__b__a___ab_pindaochangsha__a__leftflow___ab_xinkeceshi__b__leftflow___ab_gxtest__gd__leftflow___ab_gxh_82__nostrategy__leftflow___ab_pindaoshenyang__a__leftflow___i_group_5_2_deallist_poitype__d__d___ab_b_food_57_purepoilist_extinfo__a__a___ab_trip_yidizhoubianyou__b__leftflow___ab_i_group_5_3_poidetaildeallist__a__b___ab_waimaizhanshi__b__b1___a20141120nanning__m1__leftflow___ab_pindaoquxincelue__a__leftflow___ab_i_group_5_5_onsite__b__b___ab_i_group_5_6_searchkuang__a__leftflow&utm_content=4B8C0B46F5B0527D55EA292904FD7E12E48FB7BEA8DF50BFE7828AF7F20BB08D&utm_medium=iphone&utm_source=AppStore&utm_term=5.7&uuid=4B8C0B46F5B0527D55EA292904FD7E12E48FB7BEA8DF50BFE7828AF7F20BB08D&version_name=5.7";
-    
     NSString *urlStr = [NSString stringWithFormat:@"http://api.meituan.com/group/v1/itemportal/position/%f,%f?%@",delegate.latitude,delegate.longitude,@"__skck=40aaaf01c2fc4801b9c059efcd7aa146&__skcy=x6Fyq0RW3Z7ZtUXKPpRXPbYUGRE%3D&__skno=348FAC89-38E1-4880-A550-E992DB9AE44E&__skts=1434530933.451634&__skua=bd6b6e8eadfad15571a15c3b9ef9199a&__vhost=api.mobile.meituan.com&ci=1&cityId=1&client=iphone&movieBundleVersion=100&msid=48E2B810-805D-4821-9CDD-D5C9E01BC98A2015-06-17-14-50363&userid=10086&utm_campaign=AgroupBgroupD100Fab_chunceshishuju__a__a___b1junglehomepagecatesort__b__leftflow___ab_gxhceshi__nostrategy__leftflow___ab_gxhceshi0202__b__a___ab_pindaochangsha__a__leftflow___ab_xinkeceshi__b__leftflow___ab_gxtest__gd__leftflow___ab_gxh_82__nostrategy__leftflow___ab_pindaoshenyang__a__leftflow___i_group_5_2_deallist_poitype__d__d___ab_b_food_57_purepoilist_extinfo__a__a___ab_trip_yidizhoubianyou__b__leftflow___ab_i_group_5_3_poidetaildeallist__a__b___ab_waimaizhanshi__b__b1___a20141120nanning__m1__leftflow___ab_pindaoquxincelue__a__leftflow___ab_i_group_5_5_onsite__b__b___ab_i_group_5_6_searchkuang__a__leftflow&utm_content=4B8C0B46F5B0527D55EA292904FD7E12E48FB7BEA8DF50BFE7828AF7F20BB08D&utm_medium=iphone&utm_source=AppStore&utm_term=5.7&uuid=4B8C0B46F5B0527D55EA292904FD7E12E48FB7BEA8DF50BFE7828AF7F20BB08D&version_name=5.7"];
 //    NSLog(@"热门排队urlstr:    %@",urlStr);
-    __weak __typeof(self) weakself = self;
     NSLog(@"最新的经纬度：%f,%f",delegate.latitude,delegate.longitude);
     
     [[NetworkSingleton sharedManager] getHotQueueResult:nil url:urlStr successBlock:^(id responseBody){
@@ -216,10 +192,10 @@
         NSDictionary *dataDic = [responseBody objectForKey:@"data"];
         _hotQueueData = [HotQueueModel objectWithKeyValues:dataDic];
         
-        [weakself.tableView reloadData];
+        [self.tableView reloadData];
     } failureBlock:^(NSString *error){
         NSLog(@"热门排队：%@",error);
-        [weakself.tableView.header endRefreshing];
+        [self.tableView.header endRefreshing];
     }];
 }
 //推荐数据
@@ -227,12 +203,10 @@
     
     AppDelegate* delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     NSString *urlStr = [NSString stringWithFormat:@"http://api.meituan.com/group/v1/recommend/homepage/city/1?__skck=40aaaf01c2fc4801b9c059efcd7aa146&__skcy=mrUZYo7999nH8WgTicdfzaGjaSQ=&__skno=51156DC4-B59A-4108-8812-AD05BF227A47&__skts=1434530933.303717&__skua=bd6b6e8eadfad15571a15c3b9ef9199a&__vhost=api.mobile.meituan.com&ci=1&client=iphone&limit=40&movieBundleVersion=100&msid=48E2B810-805D-4821-9CDD-D5C9E01BC98A2015-06-17-14-50363&offset=0&position=%f,%f&userId=10086&userid=10086&utm_campaign=AgroupBgroupD100Fab_chunceshishuju__a__a___b1junglehomepagecatesort__b__leftflow___ab_gxhceshi__nostrategy__leftflow___ab_gxhceshi0202__b__a___ab_pindaochangsha__a__leftflow___ab_xinkeceshi__b__leftflow___ab_gxtest__gd__leftflow___ab_gxh_82__nostrategy__leftflow___ab_pindaoshenyang__a__leftflow___i_group_5_2_deallist_poitype__d__d___ab_b_food_57_purepoilist_extinfo__a__a___ab_trip_yidizhoubianyou__b__leftflow___ab_i_group_5_3_poidetaildeallist__a__b___ab_waimaizhanshi__b__b1___a20141120nanning__m1__leftflow___ab_pind",delegate.latitude,delegate.longitude];
-//    NSLog(@"推荐数据url：%@",urlStr);
     NSLog(@"最新的经纬度：%f,%f",delegate.latitude,delegate.longitude);
     
     
     
-    __weak __typeof(self) weakself = self;
     [[NetworkSingleton sharedManager] getRecommendResult:nil url:urlStr successBlock:^(id responseBody){
         NSLog(@"推荐：成功");
         NSMutableArray *dataDic = [responseBody objectForKey:@"data"];
@@ -242,18 +216,17 @@
             [_recommendArray addObject:recommend];
         }
         
-        [weakself.tableView reloadData];
+        [self.tableView reloadData];
         
     } failureBlock:^(NSString *error){
         NSLog(@"推荐：%@",error);
-        [weakself.tableView.header endRefreshing];
+        [self.tableView.header endRefreshing];
     }];
 }
 
 //获取折扣数据
 -(void)getDiscountData{
     NSString *urlStr = @"http://api.meituan.com/group/v1/deal/topic/discount/city/1?ci=1&client=iphone&movieBundleVersion=100&msid=48E2B810-805D-4821-9CDD-D5C9E01BC98A2015-06-17-14-50363&userid=10086&utm_campaign=AgroupBgroupD100Fab_chunceshishuju__a__a___b1junglehomepagecatesort__b__leftflow___ab_gxhceshi__nostrategy__leftflow___ab_gxhceshi0202__b__a___ab_pindaochangsha__a__leftflow___ab_xinkeceshi__b__leftflow___ab_gxtest__gd__leftflow___ab_gxh_82__nostrategy__leftflow___ab_pindaoshenyang__a__leftflow___i_group_5_2_deallist_poitype__d__d___ab_b_food_57_purepoilist_extinfo__a__a___ab_trip_yidizhoubianyou__b__leftflow___ab_i_group_5_3_poidetaildeallist__a__b___ab_waimaizhanshi__b__b1___a20141120nanning__m1__leftflow___ab_pindaoquxincelue__a__leftflow___ab_i_group_5_5_onsite__b__b___ab_i_group_5_6_searchkuang__a__leftflow&utm_content=4B8C0B46F5B0527D55EA292904FD7E12E48FB7BEA8DF50BFE7828AF7F20BB08D&utm_medium=iphone&utm_source=AppStore&utm_term=5.7&uuid=4B8C0B46F5B0527D55EA292904FD7E12E48FB7BEA8DF50BFE7828AF7F20BB08D&version_name=5.7";
-    __weak __typeof(self) weakself = self;
     [[NetworkSingleton sharedManager] getDiscountResult:nil url:urlStr successBlock:^(id responseBody){
         NSLog(@"获取折扣数据成功");
         
@@ -264,13 +237,13 @@
             [_discountArray addObject:discount];
         }
         
-        [weakself.tableView reloadData];
+        [self.tableView reloadData];
         
-        [weakself.tableView.header endRefreshing];
+        [self.tableView.header endRefreshing];
         
     } failureBlock:^(NSString *error){
         NSLog(@"获取折扣数据失败：%@",error);
-        [weakself.tableView.header endRefreshing];
+        [self.tableView.header endRefreshing];
     }];
 }
 
@@ -278,11 +251,6 @@
 
 #pragma mark - UITableViewDataSource
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-//    if (_rushArray.count == 0) {
-//        return 2;
-//    }else{
-//        return 3;
-//    }
     return 5;
 }
 
@@ -339,13 +307,11 @@
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width, 10)];
     headerView.backgroundColor = RGB(239, 239, 244);
-//    headerView.backgroundColor = [UIColor redColor];
     return headerView;
 }
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
     UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width, 0)];
     footerView.backgroundColor = RGB(239, 239, 244);
-//    footerView.backgroundColor = [UIColor yellowColor];
     return footerView;
 }
 
@@ -476,9 +442,7 @@
     if (indexPath.section == 3) {
         AppDelegate* delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
         NSString *campaignStr = @"AgroupBgroupD100Fab_chunceshishuju__a__a___b1junglehomepagecatesort__b__leftflow___ab_gxhceshi__nostrategy__leftflow___ab_gxhceshi0202__b__a___ab_pindaochangsha__a__leftflow___ab_xinkeceshi__b__leftflow___ab_gxtest__gd__leftflow___ab_waimaiwending__a__a___ab_gxh_82__nostrategy__leftflow___i_group_5_2_deallist_poitype__d__d___ab_b_food_57_purepoilist_extinfo__a__a___ab_i_group_5_3_poidetaildeallist__a__b___ab_pindaoshenyang__a__leftflow___ab_pindaoquxincelue0630__b__b1___ab_waimaizhanshi__b__b1___a20141120nanning__m1__leftflow___ab_i_group_5_5_onsite__b__b___ab_i_group_5_6_searchkuang__a__leftflowGhomepage_middlebanner_%E7%83%AD%E9%97%A8%E9%A4%90%E5%8E%85%E5%9C%A8%E7%BA%BF%E6%8E%92%E9%98%9F";
-//        NSString *urlStr = [NSString stringWithFormat:@"http://ismart.meituan.com/?ci=1&f=iphone&msid=48E2B810-805D-4821-9CDD-D5C9E01BC98A2015-08-05-15-44222&utm_campaign=AgroupBpushFab_mingdiangexinghua0707__a__a___ab_dealzhanshi__a__a2___ab_i550poi_xxyl__b__leftflow___ab_gxhceshi0202__b__a___ab_waimaiwending__b__a___ab_b_food_57_purepoilist_extinfo__a__a___i_group_5_2_deallist_poitype__d__d___ab_i550poi_ktv__d__j___ab_pindaoquxincelue0630__b__b1___ab_i550poi_lr__d__leftflow___ab_i_group_5_5_onsite__b__bGhomepage_magazine2_8753&utm_content=4B8C0B46F5B0527D55EA292904FD7E12E48FB7BEA8DF50BFE7828AF7F20BB08D&utm_medium=iphone&utm_source=AppStore&utm_term=5.7&uuid=4B8C0B46F5B0527D55EA292904FD7E12E48FB7BEA8DF50BFE7828AF7F20BB08D&version_name=5.7&lat=%f&lng=%f", delegate.latitude,delegate.longitude];
-    
-        
+
         NSString *urlStr = [NSString stringWithFormat:@"http://ismart.meituan.com/?ci=1&f=iphone&msid=48E2B810-805D-4821-9CDD-D5C9E01BC98A2015-07-03-16-08715&token=p09ukJltGhla4y5Jryb1jgCdKjsAAAAAsgAAADHFD3UYGxaY2FlFPQXQj2wCyCrhhn7VVB-KpG_U3-clHlvsLM8JRrnZK35y8UU3DQ&userid=10086&utm_campaign=%@&utm_content=4B7C0B46F5B0527D55EA292904FD7E12E48FB7BEA8DF50BFE7828AF7F20BB08D&utm_medium=iphone&utm_source=AppStore&utm_term=5.7&uuid=4B8C0B46F5B0527D55EA292904FD7E12E48FB7BEA8DF50BFE7828AF7F20BB08D&version_name=5.7&lat=%f&lng=%f",campaignStr, delegate.latitude,delegate.longitude];
 
         NSLog(@"urlStr:%@",urlStr);
@@ -516,9 +480,6 @@
         disOCVC.title = title;
         [self.navigationController pushViewController:disOCVC animated:YES];
     }
-    
-    
-    
 }
 
 #pragma mark - RushDelegate
@@ -526,18 +487,5 @@
     RushViewController *rushVC = [[RushViewController alloc] init];
     [self.navigationController pushViewController:rushVC animated:YES];
 }
-
-
-
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

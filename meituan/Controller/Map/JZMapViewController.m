@@ -161,7 +161,7 @@
 }
 
 -(void)updateUI{
-    NSLog(@"个数:%ld",_annotations.count);
+    NSLog(@"个数:%ld",(unsigned long)_annotations.count);
     for (int i = 0; i < _annotations.count; i++) {
         [_mapView addAnnotation:_annotations[i]];
     }

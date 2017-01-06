@@ -87,11 +87,11 @@
         [imageView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:nil];
         
         UILabel *newPriceLabel = (UILabel *)[self viewWithTag:50+i];
-        newPriceLabel.text = [NSString stringWithFormat:@"%ld元",newPrice];
+        newPriceLabel.text = [NSString stringWithFormat:@"%ld元",(long)newPrice];
 //        newPriceLabel.text = [NSString stringWithFormat:@"%@元",rush.campaignprice];
         
         UILabel *oldPriceLabel = (UILabel *)[self viewWithTag:70+i];
-        NSString *oldStr = [NSString stringWithFormat:@"%ld元",oldPrice];
+        NSString *oldStr = [NSString stringWithFormat:@"%ld元",(long)oldPrice];
 //        NSString *oldStr = [NSString stringWithFormat:@"%@元",rush.price];
         NSLog(@"=====%@",rush.price);
         

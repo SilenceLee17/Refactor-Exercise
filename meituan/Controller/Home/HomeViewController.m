@@ -177,7 +177,6 @@ static NSString *const hotQueueCellPatameters = @"&utm_content=4B7C0B46F5B0527D5
 //请求抢购数据
 -(void)getRushBuyData{
     [[NetworkSingleton sharedManager] getRushBuyResult:nil url:rushBuyURL successBlock:^(id responseBody){
-        NSLog(@"抢购请求成功");
         NSDictionary *dataDic = [responseBody objectForKey:@"data"];
         RushDataModel *rushDataM = [RushDataModel objectWithKeyValues:dataDic];
         [_rushArray removeAllObjects];
@@ -197,17 +196,13 @@ static NSString *const hotQueueCellPatameters = @"&utm_content=4B7C0B46F5B0527D5
     XDLocationManager *locationManager = [XDLocationManager sharedManager];
     
     NSString *urlStr = [NSString stringWithFormat:@"%@%f,%f?%@",hotQueueURL,locationManager.latitude,locationManager.longitude,hotQueueParameters];
-    //    NSLog(@"热门排队urlstr:    %@",urlStr);
-    NSLog(@"最新的经纬度：%f,%f",locationManager.latitude,locationManager.longitude);
     
     [[NetworkSingleton sharedManager] getHotQueueResult:nil url:urlStr successBlock:^(id responseBody){
-        NSLog(@"热门排队：成功");
         NSDictionary *dataDic = [responseBody objectForKey:@"data"];
         _hotQueueData = [HotQueueModel objectWithKeyValues:dataDic];
         
         [self.tableView reloadData];
     } failureBlock:^(NSString *error){
-        NSLog(@"热门排队：%@",error);
         [self.tableView.header endRefreshing];
     }];
 }
@@ -216,12 +211,10 @@ static NSString *const hotQueueCellPatameters = @"&utm_content=4B7C0B46F5B0527D5
     
     XDLocationManager *locationManager = [XDLocationManager sharedManager];
     NSString *urlStr = [NSString stringWithFormat:@"%@&position=%f,%f%@",recommendURL,locationManager.latitude,locationManager.longitude,recommendParameters];
-    NSLog(@"最新的经纬度：%f,%f",locationManager.latitude,locationManager.longitude);
     
     
     
     [[NetworkSingleton sharedManager] getRecommendResult:nil url:urlStr successBlock:^(id responseBody){
-        NSLog(@"推荐：成功");
         NSMutableArray *dataDic = [responseBody objectForKey:@"data"];
         [_recommendArray removeAllObjects];
         for (int i = 0; i < dataDic.count; i++) {
@@ -232,7 +225,6 @@ static NSString *const hotQueueCellPatameters = @"&utm_content=4B7C0B46F5B0527D5
         [self.tableView reloadData];
         
     } failureBlock:^(NSString *error){
-        NSLog(@"推荐：%@",error);
         [self.tableView.header endRefreshing];
     }];
 }
@@ -240,7 +232,6 @@ static NSString *const hotQueueCellPatameters = @"&utm_content=4B7C0B46F5B0527D5
 //获取折扣数据
 -(void)getDiscountData{
     [[NetworkSingleton sharedManager] getDiscountResult:nil url:discountURL successBlock:^(id responseBody){
-        NSLog(@"获取折扣数据成功");
         
         NSMutableArray *dataDic = [responseBody objectForKey:@"data"];
         [_discountArray removeAllObjects];
@@ -254,7 +245,6 @@ static NSString *const hotQueueCellPatameters = @"&utm_content=4B7C0B46F5B0527D5
         [self.tableView.header endRefreshing];
         
     } failureBlock:^(NSString *error){
-        NSLog(@"获取折扣数据失败：%@",error);
         [self.tableView.header endRefreshing];
     }];
 }
@@ -455,7 +445,6 @@ static NSString *const hotQueueCellPatameters = @"&utm_content=4B7C0B46F5B0527D5
         XDLocationManager *locationManager = [XDLocationManager sharedManager];
         NSString *urlStr = [NSString stringWithFormat:@"%@utm_campaign=%@%@lat=%f&lng=%f",hotQueueCellURL,hotQueueCellCampaign,hotQueueCellPatameters, locationManager.latitude,locationManager.longitude];
         
-        NSLog(@"urlStr:%@",urlStr);
         HotQueueViewController *hotQVC = [[HotQueueViewController alloc] init];
         hotQVC.urlStr = urlStr;
         [self.navigationController pushViewController:hotQVC animated:YES];
@@ -464,7 +453,6 @@ static NSString *const hotQueueCellPatameters = @"&utm_content=4B7C0B46F5B0527D5
         if (indexPath.row !=0) {
             RecommendModel *recommend = _recommendArray[indexPath.row-1];
             NSString *shopId = [recommend.id stringValue];
-            //            NSLog(@"shop id:%@",shopId);
             ShopViewController *shopVC = [[ShopViewController alloc] init];
             shopVC.shopID = shopId;
             [self.navigationController pushViewController:shopVC animated:YES];
@@ -482,7 +470,6 @@ static NSString *const hotQueueCellPatameters = @"&utm_content=4B7C0B46F5B0527D5
         
         [self.navigationController pushViewController:discountVC animated:YES];
     }else{
-        NSLog(@"ID: %@",[ID stringValue]);
         NSString *IDStr = [ID stringValue];
         DiscountOCViewController *disOCVC = [[DiscountOCViewController alloc] init];
         

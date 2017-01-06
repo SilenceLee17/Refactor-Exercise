@@ -208,6 +208,7 @@
 		E3D815E11B46857D005689B8 /* HotQueueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E3D815E01B46857D005689B8 /* HotQueueViewController.m */; };
 		EFD9DF63ED3251D3E76ECA2A /* libPods-meituan.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 87622A3A0FA58F81B31E325C /* libPods-meituan.a */; };
 		F31BAB931E1F7F43002011C3 /* EXTScope.m in Sources */ = {isa = PBXBuildFile; fileRef = F31BAB921E1F7F43002011C3 /* EXTScope.m */; };
+		F31BAB981E1F9284002011C3 /* XDLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F31BAB971E1F9284002011C3 /* XDLocationManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -507,6 +508,8 @@
 		F31BAB911E1F7F43002011C3 /* EXTScope.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EXTScope.h; sourceTree = "<group>"; };
 		F31BAB921E1F7F43002011C3 /* EXTScope.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EXTScope.m; sourceTree = "<group>"; };
 		F31BAB941E1F7F4C002011C3 /* metamacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = metamacros.h; sourceTree = "<group>"; };
+		F31BAB961E1F9284002011C3 /* XDLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XDLocationManager.h; sourceTree = "<group>"; };
+		F31BAB971E1F9284002011C3 /* XDLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XDLocationManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -810,6 +813,7 @@
 		E3D814EE1B2AD522005689B8 /* meituan */ = {
 			isa = PBXGroup;
 			children = (
+				F31BAB951E1F9255002011C3 /* Utils */,
 				E3D815321B2AD95E005689B8 /* Controller */,
 				E3D815491B2AD95E005689B8 /* Views */,
 				E3D815391B2AD95E005689B8 /* Model */,
@@ -1298,6 +1302,15 @@
 			path = Discount;
 			sourceTree = "<group>";
 		};
+		F31BAB951E1F9255002011C3 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				F31BAB961E1F9284002011C3 /* XDLocationManager.h */,
+				F31BAB971E1F9284002011C3 /* XDLocationManager.m */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1592,6 +1605,7 @@
 				E3513F121B4A27F90071936B /* HomeServiceModel.m in Sources */,
 				E39571971B54E4250064A84F /* JZMapViewController.m in Sources */,
 				F31BAB931E1F7F43002011C3 /* EXTScope.m in Sources */,
+				F31BAB981E1F9284002011C3 /* XDLocationManager.m in Sources */,
 				E3513F5B1B4E11890071936B /* JZOnSiteViewController.m in Sources */,
 				E3D815BE1B45124C005689B8 /* DiscountModel.m in Sources */,
 				E3513F851B4FB19E0071936B /* JZMerchantFilterView.m in Sources */,

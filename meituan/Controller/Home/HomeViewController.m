@@ -28,19 +28,12 @@
 #import "XDLocationManager.h"
 
 #import "EXTScope.h"
+#import "HomeConstants.h"
 
+typedef NS_ENUM(NSUInteger, CellType) {
+    menucell = 0
+};
 
-static NSString *const rushBuyURL = @"http://api.meituan.com/group/v1/deal/activity/1?__skck=40aaaf01c2fc4801b9c059efcd7aa146&__skcy=NF9S7jqv3TVBAoEURoapWJ5VBdQ%3D&__skno=FB6346F3-98FF-4B26-9C36-DC9022236CC3&__skts=1434530933.316028&__skua=bd6b6e8eadfad15571a15c3b9ef9199a&__vhost=api.mobile.meituan.com&ci=1&client=iphone&movieBundleVersion=100&msid=48E2B810-805D-4821-9CDD-D5C9E01BC98A2015-06-17-14-50363&ptId=iphone_5.7&userid=10086&utm_campaign=AgroupBgroupD100Fab_chunceshishuju__a__a___b1junglehomepagecatesort__b__leftflow___ab_gxhceshi__nostrategy__leftflow___ab_gxhceshi0202__b__a___ab_pindaochangsha__a__leftflow___ab_xinkeceshi__b__leftflow___ab_gxtest__gd__leftflow___ab_gxh_82__nostrategy__leftflow___ab_pindaoshenyang__a__leftflow___i_group_5_2_deallist_poitype__d__d___ab_b_food_57_purepoilist_extinfo__a__a___ab_trip_yidizhoubianyou__b__leftflow___ab_i_group_5_3_poidetaildeallist__a__b___ab_waimaizhanshi__b__b1___a20141120nanning__m1__leftflow___ab_pindaoquxincelue__a__leftflow___ab_i_group_5_5_onsite__b__b___ab_i_group_5_6_searchkuang__a__leftflow&utm_content=4B8C0B46F5B0527D55EA292904FD7E12E48FB7BEA8DF50BFE7828AF7F20BB08D&utm_medium=iphone&utm_source=AppStore&utm_term=5.7&uuid=4B8C0B46F5B0527D55EA292904FD7E12E48FB7BEA8DF50BFE7828AF7F20BB08D&version_name=5.7";
-static NSString *const hotQueueURL = @"http://api.meituan.com/group/v1/itemportal/position/";
-static NSString *const hotQueueParameters = @"__skck=40aaaf01c2fc4801b9c059efcd7aa146&__skcy=x6Fyq0RW3Z7ZtUXKPpRXPbYUGRE%3D&__skno=348FAC89-38E1-4880-A550-E992DB9AE44E&__skts=1434530933.451634&__skua=bd6b6e8eadfad15571a15c3b9ef9199a&__vhost=api.mobile.meituan.com&ci=1&cityId=1&client=iphone&movieBundleVersion=100&msid=48E2B810-805D-4821-9CDD-D5C9E01BC98A2015-06-17-14-50363&userid=10086&utm_campaign=AgroupBgroupD100Fab_chunceshishuju__a__a___b1junglehomepagecatesort__b__leftflow___ab_gxhceshi__nostrategy__leftflow___ab_gxhceshi0202__b__a___ab_pindaochangsha__a__leftflow___ab_xinkeceshi__b__leftflow___ab_gxtest__gd__leftflow___ab_gxh_82__nostrategy__leftflow___ab_pindaoshenyang__a__leftflow___i_group_5_2_deallist_poitype__d__d___ab_b_food_57_purepoilist_extinfo__a__a___ab_trip_yidizhoubianyou__b__leftflow___ab_i_group_5_3_poidetaildeallist__a__b___ab_waimaizhanshi__b__b1___a20141120nanning__m1__leftflow___ab_pindaoquxincelue__a__leftflow___ab_i_group_5_5_onsite__b__b___ab_i_group_5_6_searchkuang__a__leftflow&utm_content=4B8C0B46F5B0527D55EA292904FD7E12E48FB7BEA8DF50BFE7828AF7F20BB08D&utm_medium=iphone&utm_source=AppStore&utm_term=5.7&uuid=4B8C0B46F5B0527D55EA292904FD7E12E48FB7BEA8DF50BFE7828AF7F20BB08D&version_name=5.7";
-
-static NSString *const recommendURL = @"http://api.meituan.com/group/v1/recommend/homepage/city/1?__skck=40aaaf01c2fc4801b9c059efcd7aa146&__skcy=mrUZYo7999nH8WgTicdfzaGjaSQ=&__skno=51156DC4-B59A-4108-8812-AD05BF227A47&__skts=1434530933.303717&__skua=bd6b6e8eadfad15571a15c3b9ef9199a&__vhost=api.mobile.meituan.com&ci=1&client=iphone&limit=40&movieBundleVersion=100&msid=48E2B810-805D-4821-9CDD-D5C9E01BC98A2015-06-17-14-50363&offset=0";
-static NSString *const recommendParameters = @"&userId=10086&userid=10086&utm_campaign=AgroupBgroupD100Fab_chunceshishuju__a__a___b1junglehomepagecatesort__b__leftflow___ab_gxhceshi__nostrategy__leftflow___ab_gxhceshi0202__b__a___ab_pindaochangsha__a__leftflow___ab_xinkeceshi__b__leftflow___ab_gxtest__gd__leftflow___ab_gxh_82__nostrategy__leftflow___ab_pindaoshenyang__a__leftflow___i_group_5_2_deallist_poitype__d__d___ab_b_food_57_purepoilist_extinfo__a__a___ab_trip_yidizhoubianyou__b__leftflow___ab_i_group_5_3_poidetaildeallist__a__b___ab_waimaizhanshi__b__b1___a20141120nanning__m1__leftflow___ab_pind";
-static NSString *const discountURL = @"http://api.meituan.com/group/v1/deal/topic/discount/city/1?ci=1&client=iphone&movieBundleVersion=100&msid=48E2B810-805D-4821-9CDD-D5C9E01BC98A2015-06-17-14-50363&userid=10086&utm_campaign=AgroupBgroupD100Fab_chunceshishuju__a__a___b1junglehomepagecatesort__b__leftflow___ab_gxhceshi__nostrategy__leftflow___ab_gxhceshi0202__b__a___ab_pindaochangsha__a__leftflow___ab_xinkeceshi__b__leftflow___ab_gxtest__gd__leftflow___ab_gxh_82__nostrategy__leftflow___ab_pindaoshenyang__a__leftflow___i_group_5_2_deallist_poitype__d__d___ab_b_food_57_purepoilist_extinfo__a__a___ab_trip_yidizhoubianyou__b__leftflow___ab_i_group_5_3_poidetaildeallist__a__b___ab_waimaizhanshi__b__b1___a20141120nanning__m1__leftflow___ab_pindaoquxincelue__a__leftflow___ab_i_group_5_5_onsite__b__b___ab_i_group_5_6_searchkuang__a__leftflow&utm_content=4B8C0B46F5B0527D55EA292904FD7E12E48FB7BEA8DF50BFE7828AF7F20BB08D&utm_medium=iphone&utm_source=AppStore&utm_term=5.7&uuid=4B8C0B46F5B0527D55EA292904FD7E12E48FB7BEA8DF50BFE7828AF7F20BB08D&version_name=5.7";
-
-static NSString *const hotQueueCellURL = @"http://ismart.meituan.com/?ci=1&f=iphone&msid=48E2B810-805D-4821-9CDD-D5C9E01BC98A2015-07-03-16-08715&token=p09ukJltGhla4y5Jryb1jgCdKjsAAAAAsgAAADHFD3UYGxaY2FlFPQXQj2wCyCrhhn7VVB-KpG_U3-clHlvsLM8JRrnZK35y8UU3DQ&userid=10086&";
-static NSString *const hotQueueCellCampaign = @"AgroupBgroupD100Fab_chunceshishuju__a__a___b1junglehomepagecatesort__b__leftflow___ab_gxhceshi__nostrategy__leftflow___ab_gxhceshi0202__b__a___ab_pindaochangsha__a__leftflow___ab_xinkeceshi__b__leftflow___ab_gxtest__gd__leftflow___ab_waimaiwending__a__a___ab_gxh_82__nostrategy__leftflow___i_group_5_2_deallist_poitype__d__d___ab_b_food_57_purepoilist_extinfo__a__a___ab_i_group_5_3_poidetaildeallist__a__b___ab_pindaoshenyang__a__leftflow___ab_pindaoquxincelue0630__b__b1___ab_waimaizhanshi__b__b1___a20141120nanning__m1__leftflow___ab_i_group_5_5_onsite__b__b___ab_i_group_5_6_searchkuang__a__leftflowGhomepage_middlebanner_%E7%83%AD%E9%97%A8%E9%A4%90%E5%8E%85%E5%9C%A8%E7%BA%BF%E6%8E%92%E9%98%9F";
-static NSString *const hotQueueCellPatameters = @"&utm_content=4B7C0B46F5B0527D55EA292904FD7E12E48FB7BEA8DF50BFE7828AF7F20BB08D&utm_medium=iphone&utm_source=AppStore&utm_term=5.7&uuid=4B8C0B46F5B0527D55EA292904FD7E12E48FB7BEA8DF50BFE7828AF7F20BB08D&version_name=5.7&";
 
 @interface HomeViewController ()<UITableViewDataSource, UITableViewDelegate,DiscountDelegate,RushDelegate>
 @property(nonatomic, copy) NSMutableArray *menuArray;
@@ -60,11 +53,13 @@ static NSString *const hotQueueCellPatameters = @"&utm_content=4B7C0B46F5B0527D5
     self.view.backgroundColor = [UIColor whiteColor];
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     self.navigationController.interactivePopGestureRecognizer.delegate = nil;
+    [self setupSubViews];
+}
+-(void)setupSubViews{
     [self initData];
     [self setupNavigation];
     [self initTableView];
 }
-
 //初始化数据
 -(void)initData{
     _rushArray = [[NSMutableArray alloc] init];
@@ -85,7 +80,7 @@ static NSString *const hotQueueCellPatameters = @"&utm_content=4B7C0B46F5B0527D5
     UIButton *cityButton = [UIButton buttonWithType:UIButtonTypeCustom];
     cityButton.frame = CGRectMake(10, 30, 40, 25);
     cityButton.titleLabel.font = [UIFont systemFontOfSize:15];
-    [cityButton setTitle:@"北京" forState:UIControlStateNormal];
+    [cityButton setTitle:@"地球" forState:UIControlStateNormal];
     [navigationView addSubview:cityButton];
     UIImageView *cityArrowImage = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(cityButton.frame), 38, 13, 10)];
     [cityArrowImage setImage:[UIImage imageNamed:@"icon_homepage_downArrow"]];
@@ -318,127 +313,97 @@ static NSString *const hotQueueCellPatameters = @"&utm_content=4B7C0B46F5B0527D5
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    static NSString *cellIndentifier = @"nomorecell";
+    UITableViewCell *cell;
+    NSObject *showObject= nil;
     if (indexPath.section == 0) {
-        static NSString *cellIndentifier = @"menucell";
-        HomeMenuCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIndentifier];
-        if (cell == nil) {
-            cell = [[HomeMenuCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier menuArray:_menuArray];
-        }
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        return cell;
+        cellIndentifier = @"menucell";
+        showObject = _menuArray;
     }else if(indexPath.section == 1){
-        if (_rushArray.count == 0) {
-            static NSString *cellIndentifier = @"nomorecell";
-            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIndentifier];
-            if (cell == nil) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier];
-            }
-            
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
-            return cell;
-        }else{
-            static NSString *cellIndentifier = @"rushcell";
-            RushCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIndentifier];
-            if (cell == nil) {
-                cell = [[RushCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier];
-            }
-            
-            if (_rushArray.count!=0) {
-                [cell setRushData:_rushArray];
-            }
-            cell.delegate = self;
-            
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            return cell;
+        if (_rushArray.count > 0) {
+            cellIndentifier = @"rushcell";
+            showObject = _rushArray;
         }
-        
     }else if (indexPath.section == 2){
-        if (_discountArray.count == 0) {
-            static NSString *cellIndentifier = @"nomorecell";
-            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIndentifier];
-            if (cell == nil) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier];
-            }
-            
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
-            return cell;
-        }else{
-            static NSString *cellIndentifier = @"discountcell";
-            DiscountCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIndentifier];
-            if (cell == nil) {
-                cell = [[DiscountCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIndentifier];
-            }
-            
-            cell.delegate = self;
-            if (_discountArray.count != 0) {
-                [cell setDiscountArray:_discountArray];
-            }
-            
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            return cell;
+        if (_discountArray.count > 0) {
+            cellIndentifier = @"discountcell";
+            showObject = _discountArray;
         }
-        
     }else if(indexPath.section == 3){
-        if (_hotQueueData ==nil) {
-            static NSString *cellIndentifier = @"nomorecell";
-            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIndentifier];
-            if (cell == nil) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier];
-            }
-            
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
-            return cell;
-        }else{
-            static NSString *cellIndentifier = @"hotqueuecell";
-            HotQueueCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIndentifier];
-            if (cell == nil) {
-                cell = [[HotQueueCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIndentifier];
-            }
-            
-            if (_hotQueueData != nil) {
-                [cell setHotQueue:_hotQueueData];
-            }
-            
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            return cell;
+        if (_hotQueueData) {
+            cellIndentifier = @"hotqueuecell";
+            showObject = _hotQueueData;
         }
-        
     }else{//推荐
         if(indexPath.row == 0){
-            static NSString *cellIndentifier = @"morecell";
-            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIndentifier];
-            if (cell == nil) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier];
-            }
-            
-            cell.textLabel.text = @"猜你喜欢";
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
-            return cell;
+            cellIndentifier = @"morecell";
         }else{
-            static NSString *cellIndentifier = @"recommendcell";
-            RecommendCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIndentifier];
-            if (cell == nil) {
-                cell = [[RecommendCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier];
-            }
-            
+            cellIndentifier = @"recommendcell";
             if(_recommendArray.count!=0){
                 RecommendModel *recommend = _recommendArray[indexPath.row-1];
-                [cell setRecommendData:recommend];
+                showObject = recommend;
             }
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
-            return cell;
         }
-        
     }
+    cell = [self createTableViewCell:tableView identifier:cellIndentifier];
+    [self displayTableViewCell:cell object:showObject];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    return cell;
 }
-
-
-
+-(void)displayTableViewCell:(UITableViewCell *)tableViewCell object:(NSObject *)object{
+//    设置delegate 违反单一，稍后改
+    if ([tableViewCell respondsToSelector:@selector(setDelegate:)]) {
+        [tableViewCell performSelector:@selector(setDelegate:) withObject:self];
+    }
+    if ([tableViewCell respondsToSelector:@selector(setMenuArray:)]) {
+        [tableViewCell performSelector:@selector(setMenuArray:) withObject:object];
+    }
+    if ([tableViewCell respondsToSelector:@selector(setRushData:)]) {
+        [tableViewCell performSelector:@selector(setRushData:) withObject:object];
+    }
+    if ([tableViewCell respondsToSelector:@selector(setDiscountArray:)]) {
+        [tableViewCell performSelector:@selector(setDiscountArray:) withObject:object];
+    }
+    if ([tableViewCell respondsToSelector:@selector(setHotQueue:)]) {
+        [tableViewCell performSelector:@selector(setHotQueue:) withObject:object];
+    }
+    if ([tableViewCell respondsToSelector:@selector(setRecommendData:)]) {
+        [tableViewCell performSelector:@selector(setRecommendData:) withObject:object];
+    }
+    
+}
+-(UITableViewCell *)createTableViewCell:(UITableView *)tableView identifier:(NSString *)identifier{
+    if (!tableView || identifier.length == 0) {
+        return nil;
+    }
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    if (!cell) {
+        NSString *classString = [self classString:identifier];
+        cell = [[NSClassFromString(classString) alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+    }
+//不知道放在哪，先放这里  稍后优化
+    if ([identifier isEqualToString:@"morecell"]) {
+        cell.textLabel.text = @"猜你喜欢";
+    }
+    return cell;
+}
+-(NSString *)classString:(NSString *)identifier{
+    NSString *classString = @"UITableViewCell";
+    if ([identifier isEqualToString:@"menucell"]) {
+        classString = @"HomeMenuCell";
+    }else if ([identifier isEqualToString:@"rushcell"]) {
+        classString = @"RushCell";
+    }else if ([identifier isEqualToString:@"discountcell"]) {
+        classString = @"DiscountCell";
+    }else if ([identifier isEqualToString:@"hotqueuecell"]) {
+        classString = @"HotQueueCell";
+    }else if ([identifier isEqualToString:@"morecell"]) {
+        classString = @"UITableViewCell";
+    }else if ([identifier isEqualToString:@"recommendcell"]) {
+        classString = @"RecommendCell";
+    }
+    return classString;
+}
 #pragma mark - UITableViewDelegate
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.section == 3) {

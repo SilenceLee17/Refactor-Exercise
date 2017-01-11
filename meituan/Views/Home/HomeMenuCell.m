@@ -19,7 +19,7 @@
 
 @implementation HomeMenuCell
 
--(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier menuArray:(NSMutableArray *)menuArray{
+-(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         //
@@ -35,49 +35,7 @@
         [scrollView addSubview:_backView2];
         [self addSubview:scrollView];
         
-        //创建8个
-        for (int i = 0; i < 16; i++) {
-            if (i < 4) {
-                CGRect frame = CGRectMake(i*screen_width/4, 0, screen_width/4, 80);
-                NSString *title = [menuArray[i] objectForKey:@"title"];
-                NSString *imageStr = [menuArray[i] objectForKey:@"image"];
-                JZMTBtnView *btnView = [[JZMTBtnView alloc] initWithFrame:frame title:title imageStr:imageStr];
-                btnView.tag = 10+i;
-                [_backView1 addSubview:btnView];
-                UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(OnTapBtnView:)];
-                [btnView addGestureRecognizer:tap];
-                
-            }else if(i<8){
-                CGRect frame = CGRectMake((i-4)*screen_width/4, 80, screen_width/4, 80);
-                NSString *title = [menuArray[i] objectForKey:@"title"];
-                NSString *imageStr = [menuArray[i] objectForKey:@"image"];
-                JZMTBtnView *btnView = [[JZMTBtnView alloc] initWithFrame:frame title:title imageStr:imageStr];
-                btnView.tag = 10+i;
-                [_backView1 addSubview:btnView];
-                UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(OnTapBtnView:)];
-                [btnView addGestureRecognizer:tap];
-            }else if(i < 12){
-                CGRect frame = CGRectMake((i-8)*screen_width/4, 0, screen_width/4, 80);
-                NSString *title = [menuArray[i] objectForKey:@"title"];
-                NSString *imageStr = [menuArray[i] objectForKey:@"image"];
-                JZMTBtnView *btnView = [[JZMTBtnView alloc] initWithFrame:frame title:title imageStr:imageStr];
-                btnView.tag = 10+i;
-                [_backView2 addSubview:btnView];
-                UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(OnTapBtnView:)];
-                [btnView addGestureRecognizer:tap];
-            }else{
-                CGRect frame = CGRectMake((i-12)*screen_width/4, 80, screen_width/4, 80);
-                NSString *title = [menuArray[i] objectForKey:@"title"];
-                NSString *imageStr = [menuArray[i] objectForKey:@"image"];
-                JZMTBtnView *btnView = [[JZMTBtnView alloc] initWithFrame:frame title:title imageStr:imageStr];
-                btnView.tag = 10+i;
-                [_backView2 addSubview:btnView];
-                UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(OnTapBtnView:)];
-                [btnView addGestureRecognizer:tap];
-            }
-        }
-        
-        //
+               //
         _pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(screen_width/2-20, 160, 0, 20)];
         _pageControl.currentPage = 0;
         _pageControl.numberOfPages = 2;
@@ -89,7 +47,51 @@
     }
     return self;
 }
-
+-(void)setMenuArray:(NSMutableArray *)menuArray{
+    //创建8个
+    for (int i = 0; i < 16; i++) {
+        if (i < 4) {
+            CGRect frame = CGRectMake(i*screen_width/4, 0, screen_width/4, 80);
+            NSString *title = [menuArray[i] objectForKey:@"title"];
+            NSString *imageStr = [menuArray[i] objectForKey:@"image"];
+            JZMTBtnView *btnView = [[JZMTBtnView alloc] initWithFrame:frame title:title imageStr:imageStr];
+            btnView.tag = 10+i;
+            [_backView1 addSubview:btnView];
+            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(OnTapBtnView:)];
+            [btnView addGestureRecognizer:tap];
+            
+        }else if(i<8){
+            CGRect frame = CGRectMake((i-4)*screen_width/4, 80, screen_width/4, 80);
+            NSString *title = [menuArray[i] objectForKey:@"title"];
+            NSString *imageStr = [menuArray[i] objectForKey:@"image"];
+            JZMTBtnView *btnView = [[JZMTBtnView alloc] initWithFrame:frame title:title imageStr:imageStr];
+            btnView.tag = 10+i;
+            [_backView1 addSubview:btnView];
+            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(OnTapBtnView:)];
+            [btnView addGestureRecognizer:tap];
+        }else if(i < 12){
+            CGRect frame = CGRectMake((i-8)*screen_width/4, 0, screen_width/4, 80);
+            NSString *title = [menuArray[i] objectForKey:@"title"];
+            NSString *imageStr = [menuArray[i] objectForKey:@"image"];
+            JZMTBtnView *btnView = [[JZMTBtnView alloc] initWithFrame:frame title:title imageStr:imageStr];
+            btnView.tag = 10+i;
+            [_backView2 addSubview:btnView];
+            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(OnTapBtnView:)];
+            [btnView addGestureRecognizer:tap];
+        }else{
+            CGRect frame = CGRectMake((i-12)*screen_width/4, 80, screen_width/4, 80);
+            NSString *title = [menuArray[i] objectForKey:@"title"];
+            NSString *imageStr = [menuArray[i] objectForKey:@"image"];
+            JZMTBtnView *btnView = [[JZMTBtnView alloc] initWithFrame:frame title:title imageStr:imageStr];
+            btnView.tag = 10+i;
+            [_backView2 addSubview:btnView];
+            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(OnTapBtnView:)];
+            [btnView addGestureRecognizer:tap];
+        }
+    }
+    
+ 
+}
 - (void)awakeFromNib {
     // Initialization code
     [super awakeFromNib];

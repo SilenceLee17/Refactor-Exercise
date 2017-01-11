@@ -12,6 +12,6 @@
 
 @interface HomeMenuCell : UITableViewCell
 
--(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier menuArray:(NSMutableArray *)menuArray;
-
+-(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier;
+-(void)setMenuArray:(NSMutableArray *)menuArray;
 @end

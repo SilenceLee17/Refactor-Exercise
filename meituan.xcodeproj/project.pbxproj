@@ -510,6 +510,7 @@
 		F31BAB941E1F7F4C002011C3 /* metamacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = metamacros.h; sourceTree = "<group>"; };
 		F31BAB961E1F9284002011C3 /* XDLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XDLocationManager.h; sourceTree = "<group>"; };
 		F31BAB971E1F9284002011C3 /* XDLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XDLocationManager.m; sourceTree = "<group>"; };
+		F3E2E7B41E23900800C34BEE /* HomeConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeConstants.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -885,6 +886,7 @@
 				E3D815CF1B4631E2005689B8 /* DiscountOCViewController.m */,
 				E3D815DF1B46857D005689B8 /* HotQueueViewController.h */,
 				E3D815E01B46857D005689B8 /* HotQueueViewController.m */,
+				F3E2E7B41E23900800C34BEE /* HomeConstants.h */,
 			);
 			path = Home;
 			sourceTree = "<group>";

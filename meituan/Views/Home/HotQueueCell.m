@@ -50,6 +50,9 @@
 }
 
 -(void)setHotQueue:(HotQueueModel *)hotQueue{
+    if (!hotQueue) {
+        return;
+    }
     _hotQueue = hotQueue;
     [_imageView sd_setImageWithURL:[NSURL URLWithString:hotQueue.imageUrl] placeholderImage:nil];
     _titleLabel.text = hotQueue.title;

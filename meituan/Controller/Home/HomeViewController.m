@@ -316,45 +316,55 @@ typedef NS_ENUM(NSUInteger, CellType) {
     static NSString *cellIndentifier = @"nomorecell";
     UITableViewCell *cell;
     NSObject *showObject= nil;
-    if (indexPath.section == 0) {
-        cellIndentifier = @"menucell";
-        showObject = _menuArray;
-    }else if(indexPath.section == 1){
-        if (_rushArray.count > 0) {
-            cellIndentifier = @"rushcell";
-            showObject = _rushArray;
-        }
-    }else if (indexPath.section == 2){
-        if (_discountArray.count > 0) {
-            cellIndentifier = @"discountcell";
-            showObject = _discountArray;
-        }
-    }else if(indexPath.section == 3){
-        if (_hotQueueData) {
-            cellIndentifier = @"hotqueuecell";
-            showObject = _hotQueueData;
-        }
-    }else{//推荐
-        if(indexPath.row == 0){
-            cellIndentifier = @"morecell";
-        }else{
-            cellIndentifier = @"recommendcell";
-            if(_recommendArray.count!=0){
-                RecommendModel *recommend = _recommendArray[indexPath.row-1];
-                showObject = recommend;
+    switch (indexPath.section) {
+        case 0:
+            cellIndentifier = @"menucell";
+            showObject = _menuArray;
+            break;
+          
+        case 1:
+            if (_rushArray.count > 0) {
+                cellIndentifier = @"rushcell";
+                showObject = _rushArray;
             }
-        }
+            break;
+        case 2:
+            if (_discountArray.count > 0) {
+                cellIndentifier = @"discountcell";
+                showObject = _discountArray;
+            }
+            break;
+        case 3:
+            if (_hotQueueData) {
+                cellIndentifier = @"hotqueuecell";
+                showObject = _hotQueueData;
+            }
+            break;
+        default:
+            if(indexPath.row == 0){
+                cellIndentifier = @"morecell";
+                showObject = @{@"textLabel.text":@"猜你喜欢"};
+            }else{
+                cellIndentifier = @"recommendcell";
+                if(_recommendArray.count!=0){
+                    RecommendModel *recommend = _recommendArray[indexPath.row-1];
+                    showObject = recommend;
+                }
+            }
+            break;
     }
     cell = [self createTableViewCell:tableView identifier:cellIndentifier];
+    [self setDelegate:cell];
     [self displayTableViewCell:cell object:showObject];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
--(void)displayTableViewCell:(UITableViewCell *)tableViewCell object:(NSObject *)object{
-//    设置delegate 违反单一，稍后改
+-(void)setDelegate:(UITableViewCell *)tableViewCell{
     if ([tableViewCell respondsToSelector:@selector(setDelegate:)]) {
         [tableViewCell performSelector:@selector(setDelegate:) withObject:self];
     }
+}
+-(void)displayTableViewCell:(UITableViewCell *)tableViewCell object:(NSObject *)object{
     if ([tableViewCell respondsToSelector:@selector(setMenuArray:)]) {
         [tableViewCell performSelector:@selector(setMenuArray:) withObject:object];
     }
@@ -370,7 +380,12 @@ typedef NS_ENUM(NSUInteger, CellType) {
     if ([tableViewCell respondsToSelector:@selector(setRecommendData:)]) {
         [tableViewCell performSelector:@selector(setRecommendData:) withObject:object];
     }
-    
+//    先这样
+    if ([object isKindOfClass:[NSDictionary class]]) {
+        NSDictionary *dic = (NSDictionary *)object;
+        NSString *value = dic[@"textLabel.text"];
+        tableViewCell.textLabel.text = value;
+    }
 }
 -(UITableViewCell *)createTableViewCell:(UITableView *)tableView identifier:(NSString *)identifier{
     if (!tableView || identifier.length == 0) {
@@ -380,10 +395,6 @@ typedef NS_ENUM(NSUInteger, CellType) {
     if (!cell) {
         NSString *classString = [self classString:identifier];
         cell = [[NSClassFromString(classString) alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-    }
-//不知道放在哪，先放这里  稍后优化
-    if ([identifier isEqualToString:@"morecell"]) {
-        cell.textLabel.text = @"猜你喜欢";
     }
     return cell;
 }

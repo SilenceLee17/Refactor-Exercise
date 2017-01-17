@@ -318,39 +318,39 @@ static NSString *const kRecommendCell = @"RecommendCell";
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    static NSString *cellIndentifier ;
+    static NSString *cellIdentifier ;
     UITableViewCell *cell;
     NSObject *showObject= nil;
     switch (indexPath.section) {
         case 0:
-            cellIndentifier = kHomeMenuCell;
+            cellIdentifier = kHomeMenuCell;
             showObject = _menuArray;
             break;
           
         case 1:
             if (_rushArray.count > 0) {
-                cellIndentifier = kRushCell;
+                cellIdentifier = kRushCell;
                 showObject = _rushArray;
             }
             break;
         case 2:
             if (_discountArray.count > 0) {
-                cellIndentifier = kDiscountCell;
+                cellIdentifier = kDiscountCell;
                 showObject = _discountArray;
             }
             break;
         case 3:
             if (_hotQueueData) {
-                cellIndentifier = kHotQueueCell;
+                cellIdentifier = kHotQueueCell;
                 showObject = _hotQueueData;
             }
             break;
         default:
             if(indexPath.row == 0){
-                cellIndentifier = kUITableViewCell;
+                cellIdentifier = kUITableViewCell;
                 showObject = @{kCellText:@"猜你喜欢"};
             }else{
-                cellIndentifier = kRecommendCell;
+                cellIdentifier = kRecommendCell;
                 if(_recommendArray.count!=0){
                     RecommendModel *recommend = _recommendArray[indexPath.row-1];
                     showObject = recommend;
@@ -358,7 +358,7 @@ static NSString *const kRecommendCell = @"RecommendCell";
             }
             break;
     }
-    cell = [self createTableViewCell:tableView identifier:cellIndentifier];
+    cell = [self createTableViewCell:tableView identifier:cellIdentifier];
     [self setDelegate:cell];
     [self displayTableViewCell:cell object:showObject];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;

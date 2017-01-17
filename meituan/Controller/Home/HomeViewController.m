@@ -30,9 +30,14 @@
 #import "EXTScope.h"
 #import "HomeConstants.h"
 
-typedef NS_ENUM(NSUInteger, CellType) {
-    menucell = 0
-};
+static NSString *const kCellText = @"textLabel.text";
+
+static NSString *const kUITableViewCell = @"UITableViewCell";
+static NSString *const kHomeMenuCell = @"HomeMenuCell";
+static NSString *const kRushCell = @"RushCell";
+static NSString *const kDiscountCell = @"DiscountCell";
+static NSString *const kHotQueueCell = @"HotQueueCell";
+static NSString *const kRecommendCell = @"RecommendCell";
 
 
 @interface HomeViewController ()<UITableViewDataSource, UITableViewDelegate,DiscountDelegate,RushDelegate>
@@ -313,39 +318,39 @@ typedef NS_ENUM(NSUInteger, CellType) {
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    static NSString *cellIndentifier = @"nomorecell";
+    static NSString *cellIndentifier ;
     UITableViewCell *cell;
     NSObject *showObject= nil;
     switch (indexPath.section) {
         case 0:
-            cellIndentifier = @"menucell";
+            cellIndentifier = kHomeMenuCell;
             showObject = _menuArray;
             break;
           
         case 1:
             if (_rushArray.count > 0) {
-                cellIndentifier = @"rushcell";
+                cellIndentifier = kRushCell;
                 showObject = _rushArray;
             }
             break;
         case 2:
             if (_discountArray.count > 0) {
-                cellIndentifier = @"discountcell";
+                cellIndentifier = kDiscountCell;
                 showObject = _discountArray;
             }
             break;
         case 3:
             if (_hotQueueData) {
-                cellIndentifier = @"hotqueuecell";
+                cellIndentifier = kHotQueueCell;
                 showObject = _hotQueueData;
             }
             break;
         default:
             if(indexPath.row == 0){
-                cellIndentifier = @"morecell";
-                showObject = @{@"textLabel.text":@"猜你喜欢"};
+                cellIndentifier = kUITableViewCell;
+                showObject = @{kCellText:@"猜你喜欢"};
             }else{
-                cellIndentifier = @"recommendcell";
+                cellIndentifier = kRecommendCell;
                 if(_recommendArray.count!=0){
                     RecommendModel *recommend = _recommendArray[indexPath.row-1];
                     showObject = recommend;
@@ -367,24 +372,26 @@ typedef NS_ENUM(NSUInteger, CellType) {
 -(void)displayTableViewCell:(UITableViewCell *)tableViewCell object:(NSObject *)object{
     if ([tableViewCell respondsToSelector:@selector(setMenuArray:)]) {
         [tableViewCell performSelector:@selector(setMenuArray:) withObject:object];
-    }
-    if ([tableViewCell respondsToSelector:@selector(setRushData:)]) {
+        
+    }else if ([tableViewCell respondsToSelector:@selector(setRushData:)]) {
         [tableViewCell performSelector:@selector(setRushData:) withObject:object];
-    }
-    if ([tableViewCell respondsToSelector:@selector(setDiscountArray:)]) {
+        
+    }else if ([tableViewCell respondsToSelector:@selector(setDiscountArray:)]) {
         [tableViewCell performSelector:@selector(setDiscountArray:) withObject:object];
-    }
-    if ([tableViewCell respondsToSelector:@selector(setHotQueue:)]) {
+        
+    }else if ([tableViewCell respondsToSelector:@selector(setHotQueue:)]) {
         [tableViewCell performSelector:@selector(setHotQueue:) withObject:object];
-    }
-    if ([tableViewCell respondsToSelector:@selector(setRecommendData:)]) {
+        
+    }else if ([tableViewCell respondsToSelector:@selector(setRecommendData:)]) {
         [tableViewCell performSelector:@selector(setRecommendData:) withObject:object];
-    }
-//    先这样
-    if ([object isKindOfClass:[NSDictionary class]]) {
-        NSDictionary *dic = (NSDictionary *)object;
-        NSString *value = dic[@"textLabel.text"];
-        tableViewCell.textLabel.text = value;
+        
+    }else if ([object isKindOfClass:[NSDictionary class]]) {
+        NSDictionary *dictionary = (NSDictionary *)object;
+        NSEnumerator *enumerator = [dictionary keyEnumerator];
+        NSString *key;
+        while ((key = [enumerator nextObject])) {
+            [tableViewCell setValue:dictionary[key] forKeyPath:key];
+        }
     }
 }
 -(UITableViewCell *)createTableViewCell:(UITableView *)tableView identifier:(NSString *)identifier{
@@ -393,28 +400,12 @@ typedef NS_ENUM(NSUInteger, CellType) {
     }
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
-        NSString *classString = [self classString:identifier];
+        NSString *classString = identifier;
         cell = [[NSClassFromString(classString) alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
     return cell;
 }
--(NSString *)classString:(NSString *)identifier{
-    NSString *classString = @"UITableViewCell";
-    if ([identifier isEqualToString:@"menucell"]) {
-        classString = @"HomeMenuCell";
-    }else if ([identifier isEqualToString:@"rushcell"]) {
-        classString = @"RushCell";
-    }else if ([identifier isEqualToString:@"discountcell"]) {
-        classString = @"DiscountCell";
-    }else if ([identifier isEqualToString:@"hotqueuecell"]) {
-        classString = @"HotQueueCell";
-    }else if ([identifier isEqualToString:@"morecell"]) {
-        classString = @"UITableViewCell";
-    }else if ([identifier isEqualToString:@"recommendcell"]) {
-        classString = @"RecommendCell";
-    }
-    return classString;
-}
+
 #pragma mark - UITableViewDelegate
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.section == 3) {
